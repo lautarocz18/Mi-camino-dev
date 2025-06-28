@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Camino Dev 🚀</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #0f0;
+    }
+    .semana {
+      margin: 1rem 0;
+      padding: 1rem;
+      border: 1px solid #0f0;
+      border-radius: 10px;
+    }
+    .check {
+      margin-right: 0.5rem;
+    }
+    progress {
+      width: 100%;
+      height: 20px;
+    }
+    .motivacion {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mi Camino Dev 🚀</h1>
+  <div id="contenido"></div>
+  <div class="motivacion" id="mensaje"></div>
+
+  <script>
+    const temas = [
+      "Semana 1: Fundamentos de Java",
+      "Semana 2: Bucles y Métodos",
+      "Semana 3: Clases y Objetos",
+      "Semana 4: Arrays y Try-Catch",
+      "Semana 5: Archivos y Proyecto",
+      "Semana 6: Base de Datos y JDBC",
+      "Semana 7: HTML + CSS",
+      "Semana 8: JavaScript y DOM",
+      "Semana 9: Spring Boot Backend",
+      "Semana 10: Proyecto Final"
+    ];
+
+    const estado = JSON.parse(localStorage.getItem("progresoDev")) || Array(10).fill(false);
+
+    function render() {
+      const cont = document.getElementById("contenido");
+      cont.innerHTML = "";
+      let completadas = 0;
+
+      temas.forEach((tema, i) => {
+        const div = document.createElement("div");
+        div.className = "semana";
+
+        const check = document.createElement("input");
+        check.type = "checkbox";
+        check.className = "check";
+        check.checked = estado[i];
+        check.onchange = () => {
+          estado[i] = check.checked;
+          localStorage.setItem("progresoDev", JSON.stringify(estado));
+          render();
+        };
+
+        const label = document.createElement("label");
+        label.textContent = tema;
+
+        if (estado[i]) completadas++;
+
+        div.appendChild(check);
+        div.appendChild(label);
+        cont.appendChild(div);
+      });
+
+      const porcentaje = Math.round((completadas / temas.length) * 100);
+      document.getElementById("mensaje").innerHTML =
+        porcentaje === 100
+          ? "🎉 ¡Completaste tu camino, Lauti Dev!"
+          : `Avance: ${porcentaje}% - ¡Seguí así! 💪`;
+    }
+
+    render();
+  </script>
+</body>
+</html>
